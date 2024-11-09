@@ -52,17 +52,28 @@ async function run() {
     app.put('/component/:id', async (req, res) => {
       const data = req.body;
       const id = req.params.id;
+      // console.log('before query');
+
+      // Remove _id from data to prevent modifying the immutable field
+      const { _id, ...updateData } = data;
+
       const query = { _id: new ObjectId(id) };
+      // console.log('after query');
+
       const options = { upsert: true };
       const updatedInfo = {
-        $set: {
-          ...data
-        }
-      }
+        $set: updateData // Only set fields excluding _id
+      };
 
-      const result = await componentCollection.updateOne(query, updatedInfo, options);
-      res.send(result);
-    })
+      try {
+        const result = await componentCollection.updateOne(query, updatedInfo, options);
+        res.send(result);
+      } catch (error) {
+        console.error("Error updating component:", error);
+        res.status(500).send("Error updating component");
+      }
+    });
+
 
     app.delete('/component/:id', async (req, res) => {
       const id = req.params.id;
