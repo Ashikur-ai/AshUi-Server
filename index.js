@@ -29,6 +29,9 @@ async function run() {
     // await client.connect();
 
     const componentCollection = client.db('AshUi').collection('components');
+    const backendComponentCollection = client.db('AshUi').collection('backendComponent');
+
+    // Frontend related api 
 
     app.post('/component', async (req, res) => {
       const data = req.body;
@@ -79,6 +82,49 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await componentCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
+    // backend related api 
+
+    app.post('/backendComponent', async (req, res) => {
+      const data = req.body;
+      const result = await backendComponentCollection.insertOne(data);
+      res.send(result);
+    })
+
+    app.get('/backendComponent', async (req, res) => {
+      const result = await backendComponentCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/backendComponent/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await backendComponentCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/backendComponent/:id', async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedInfo = {
+        $set: {
+          ...data
+        }
+      }
+
+      const result = await backendComponentCollection.updateOne(query, updatedInfo, options);
+      res.send(result);
+    })
+
+    app.delete('/backendComponent/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await backendComponentCollection.deleteOne(query);
       res.send(result);
     })
 
