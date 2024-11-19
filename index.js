@@ -30,6 +30,7 @@ async function run() {
 
     const componentCollection = client.db('AshUi').collection('components');
     const backendComponentCollection = client.db('AshUi').collection('backendComponent');
+    const necessaryCodeCollection = client.db('AshUi').collection('necessaryCode');
 
     // Frontend related api 
 
@@ -125,6 +126,49 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await backendComponentCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // necessary code api 
+    app.post('/necessaryCode', async (req, res) => {
+      const data = req.body;
+      const result = await necessaryCodeCollection.insertOne(data);
+      res.send(result);
+    })
+
+    app.get('/necessaryCode', async (req, res) => {
+      const data = req.body;
+      const result = await necessaryCodeCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/necessaryCode/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await necessaryCodeCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/necessaryCode/:id', async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedInfo = {
+        $set: {
+          ...data
+        }
+      }
+
+      const result = await necessaryCodeCollection.updateOne(query, updatedInfo, options);
+      res.send(result);
+    })
+
+
+    app.delete('/necessaryCode/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await necessaryCodeCollection.deleteOne(query);
       res.send(result);
     })
 
