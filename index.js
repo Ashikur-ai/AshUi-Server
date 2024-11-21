@@ -31,6 +31,10 @@ async function run() {
     const componentCollection = client.db('AshUi').collection('components');
     const backendComponentCollection = client.db('AshUi').collection('backendComponent');
     const necessaryCodeCollection = client.db('AshUi').collection('necessaryCode');
+    
+    const FrontendCategoryCollection = client.db('AshUi').collection('FrontendCategory');
+    const CodeCategoryCollection = client.db('AshUi').collection('CodeCategory');
+    const BackendCategoryCollection = client.db('AshUi').collection('BackendCategory');
 
     // Frontend related api 
 
@@ -169,6 +173,135 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await necessaryCodeCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // Frontend Category API
+
+    app.post('/frontCategory', async (req, res) => {
+      const data = req.body;
+      const result = await FrontendCategoryCollection.insertOne(data);
+      res.send(result);
+    })
+
+    app.get('/frontCategory', async (req, res) => {
+      const result = await FrontendCategoryCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/frontCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await FrontendCategoryCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/frontCategory/:id', async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedInfo = {
+        $set: {
+          ...data
+        }
+      }
+
+      const result = await FrontendCategoryCollection.updateOne(query, updatedInfo, options);
+      res.send(result);
+    })
+
+
+    app.delete('/frontCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await FrontendCategoryCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // Necessary Code API 
+
+    app.post('/codeCategory', async (req, res) => {
+      const data = req.body;
+      const result = await CodeCategoryCollection.insertOne(data);
+      res.send(result);
+    })
+
+    app.get('/codeCategory', async (req, res) => {
+      const result = await CodeCategoryCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/codeCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await CodeCategoryCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/codeCategory/:id', async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedInfo = {
+        $set: {
+          ...data
+        }
+      }
+
+      const result = await CodeCategoryCollection.updateOne(query, updatedInfo, options);
+      res.send(result);
+    })
+
+
+    app.delete('/codeCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await CodeCategoryCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // Backend Related API
+
+    app.post('/backCategory', async (req, res) => {
+      const data = req.body;
+      const result = await BackendCategoryCollection.insertOne(data);
+      res.send(result);
+    })
+
+    app.get('/backCategory', async (req, res) => {
+      const result = await BackendCategoryCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get('/backCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await BackendCategoryCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/backCategory/:id', async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedInfo = {
+        $set: {
+          ...data
+        }
+      }
+
+      const result = await BackendCategoryCollection.updateOne(query, updatedInfo, options);
+      res.send(result);
+    })
+
+
+    app.delete('/backCategory/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await BackendCategoryCollection.deleteOne(query);
       res.send(result);
     })
 
